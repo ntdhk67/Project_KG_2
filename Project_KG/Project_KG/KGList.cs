@@ -11,6 +11,7 @@ namespace Project_KG
     {
         private T[] _list;
         private int _num = 0, _max;
+        public int Top => _num;
         public KGList(int s = 100)
         {
             if (s < 0)

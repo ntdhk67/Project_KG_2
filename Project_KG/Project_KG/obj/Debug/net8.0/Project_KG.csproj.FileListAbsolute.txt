@@ -12,3 +12,18 @@ C:\Users\daeha\OneDrive\바탕 화면\Project_KG\Project_KG\obj\Debug\net8.0\ref
 C:\Users\daeha\OneDrive\바탕 화면\Project_KG\Project_KG\obj\Debug\net8.0\Project_KG.pdb
 C:\Users\daeha\OneDrive\바탕 화면\Project_KG\Project_KG\obj\Debug\net8.0\Project_KG.genruntimeconfig.cache
 C:\Users\daeha\OneDrive\바탕 화면\Project_KG\Project_KG\obj\Debug\net8.0\ref\Project_KG.dll
+C:\Users\daeha\OneDrive\문서\GitHub\Project_KG_2\Project_KG\Project_KG\obj\Debug\net8.0\Project_KG.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\daeha\OneDrive\문서\GitHub\Project_KG_2\Project_KG\Project_KG\obj\Debug\net8.0\Project_KG.AssemblyInfoInputs.cache
+C:\Users\daeha\OneDrive\문서\GitHub\Project_KG_2\Project_KG\Project_KG\obj\Debug\net8.0\Project_KG.AssemblyInfo.cs
+C:\Users\daeha\OneDrive\문서\GitHub\Project_KG_2\Project_KG\Project_KG\obj\Debug\net8.0\Project_KG.csproj.CoreCompileInputs.cache
+C:\Users\daeha\OneDrive\문서\GitHub\Project_KG_2\Project_KG\Project_KG\obj\Debug\net8.0\Project_KG.sourcelink.json
+C:\Users\daeha\OneDrive\문서\GitHub\Project_KG_2\Project_KG\Project_KG\obj\Debug\net8.0\Project_KG.dll
+C:\Users\daeha\OneDrive\문서\GitHub\Project_KG_2\Project_KG\Project_KG\obj\Debug\net8.0\refint\Project_KG.dll
+C:\Users\daeha\OneDrive\문서\GitHub\Project_KG_2\Project_KG\Project_KG\obj\Debug\net8.0\Project_KG.pdb
+C:\Users\daeha\OneDrive\문서\GitHub\Project_KG_2\Project_KG\Project_KG\bin\Debug\net8.0\Project_KG.exe
+C:\Users\daeha\OneDrive\문서\GitHub\Project_KG_2\Project_KG\Project_KG\bin\Debug\net8.0\Project_KG.deps.json
+C:\Users\daeha\OneDrive\문서\GitHub\Project_KG_2\Project_KG\Project_KG\bin\Debug\net8.0\Project_KG.runtimeconfig.json
+C:\Users\daeha\OneDrive\문서\GitHub\Project_KG_2\Project_KG\Project_KG\bin\Debug\net8.0\Project_KG.dll
+C:\Users\daeha\OneDrive\문서\GitHub\Project_KG_2\Project_KG\Project_KG\bin\Debug\net8.0\Project_KG.pdb
+C:\Users\daeha\OneDrive\문서\GitHub\Project_KG_2\Project_KG\Project_KG\obj\Debug\net8.0\Project_KG.genruntimeconfig.cache
+C:\Users\daeha\OneDrive\문서\GitHub\Project_KG_2\Project_KG\Project_KG\obj\Debug\net8.0\ref\Project_KG.dll

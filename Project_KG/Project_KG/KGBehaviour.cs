@@ -11,20 +11,25 @@ namespace Project_KG
     {
         public bool Enabled, Started = false;
         private KGList<IComponent> components = new KGList<IComponent>();
-        protected KGEngine ThisEngine { get; set; } //일종의 scene 느낌으로 만드는 중
+        protected KGEngine ThisEngine { get;} 
+        protected GameManager ThisGameManager { get; set; }//일종의 scene 느낌으로 만드는 중
         public KGBehaviour(KGEngine kgEngine)
         {
             ThisEngine = kgEngine;
+            ThisGameManager = ThisEngine.GM;
         }
         public void Subscribe_Enable()
         {
-            ThisEngine.Test += Start;
-            ThisEngine.Test += Update;
+            if(Started==false)
+            {
+                ThisEngine.Lifecycle += Start; //중복 방지
+            }
+            ThisEngine.Lifecycle += Update;
         }
         public void UnSubscribe_Disable()
         {
-            ThisEngine.Test -= Start;
-            ThisEngine.Test -= Update;
+            ThisEngine.Lifecycle -= Start; //구독한적 없어도 if 없이 -=해도 됨 (List와 같은 이유)
+            ThisEngine.Lifecycle -= Update;
         }
         public T AddComponent<T>() where T : IComponent,new()
         {
@@ -68,7 +73,7 @@ namespace Project_KG
                 Enabled = true;
             }
         }
-        protected  void Disable_KGB()
+        protected void Disable_KGB()
         {
             if(Enabled==true)
             {
@@ -80,15 +85,18 @@ namespace Project_KG
         public void Awake()
         {
             Awake_KGB();
+            ThisEngine.Lifecycle -= Awake;
         }
         public void Start()
         {
             if (Started == true)
             {
+                ThisEngine.Lifecycle -= Start;
                 return;
             }
             Start_KGB();
             Started = true;
+            ThisEngine.Lifecycle -= Start;
         }
         public void Update()
         {
