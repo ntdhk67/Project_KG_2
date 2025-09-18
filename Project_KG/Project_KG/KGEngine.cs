@@ -16,7 +16,7 @@ namespace Project_KG
         public Random _rnd = new Random();
         public KGEngine()
         {
-            _gameManager = new GameManager(this);
+            _gameManager = new GameManager(this); //scene니까 갈아끼울 수 있는 이벤트로
             _gameManager.Subscribe_Enable(); //Start,Update는 고리에 건 순서대로 작동함. 을 고려해서 몬스터랑 플레이어를 추가하면... 혹은 분리해야 하나...? X
             if(Lifecycle == null)
             {
@@ -28,35 +28,25 @@ namespace Project_KG
         {
             while(true)
             {
-                if(_ifAwake==true)
-                {
-                    Awake();
-                }//귀찮아서 넣어버림, 사이클에 적합하지 않아 나중에 뺄 예정
                 if(_ifStart==true)
                 {
-                    Start();
+                    Start(); //프레임 통일 및 Awake랑 달리 최초 활성화 시라는 점을 생각해서
                 }
-                Update_KGB();
+                Update();
                 Thread.Sleep((int)100);
+                _gameManager.Destroyer();
             }
-        }
-        protected virtual void Awake()
-        {
-
         }
         protected virtual void Start()
         {
-
+            Lifecycle?.Invoke();
         }
-        protected virtual void Update_KGB()
+        protected virtual void Update()
         {
             Lifecycle?.Invoke();
         }
-        public void OnIfAwake()
-        {
-            _ifAwake = true;
-        }
-        public void OnIfStart()
+
+        public void OnIfStart_KGB()
         {
             _ifStart = true;
         }

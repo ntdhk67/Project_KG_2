@@ -8,13 +8,16 @@ using Project_KG.Interfaces;
 
 namespace Project_KG
 {
-    public class GameManager:KGBehaviour
+    public class GameManager:KGBehaviour //대충 scene1
     {
         //private int i = 0; //순서 테스트
         protected KGList<EntityBase> _players = new KGList<EntityBase>();
         protected KGList<EntityBase> _monsters = new KGList<EntityBase>();
+        protected KGList<EntityBase> _dead = new KGList<EntityBase>();
         public KGList<EntityBase> players =>_players;
         public KGList<EntityBase> monsters=>_monsters;
+        public KGList<EntityBase> dead => _dead; //죽게 될 애들
+        public bool _isDestroy = false;
 
         public GameManager(KGEngine engine) : base(engine)
         {
@@ -25,12 +28,60 @@ namespace Project_KG
         }
         protected override void Start_KGB()
         {
-            players.Add(new Knight(ThisEngine));
+            int a = 0, b = 0, c = 0, d = 0, e = 0, f = 0; //Knight, Archer, Mage, Skeleton, Slime, Orc 횟수대로 숫자 붙이고 싶었어서
+            for (int i= ThisEngine._rnd.Next(5, 10); i>0 ;i--)
+            {
+                switch (ThisEngine._rnd.Next(0, 3))
+                {
+                    case 0:
+                        a++;
+                        players.Add(new Knight(ThisEngine,a));
+                        break;
+                    case 1:
+                        b++;
+                        players.Add(new Archer(ThisEngine,b));
+                        break;
+                    case 2:
+                        c++;
+                        players.Add(new Mage(ThisEngine,c));
+                        break;
+                }
+            } //플레이어 선, 몬스터 후 근데 이렇게 하면 나중에 더 업그레이드 막 해가지고 전투 도중에 소환된게 있거나 그러면 순서관리하기 용이하지 않음... 그래서 아예 Invoke할 곳을 분할해서 두면 낫겠다 싶긴 한데...
+            for (int i = ThisEngine._rnd.Next(5, 10); i > 0; i--)
+            {
+                switch (ThisEngine._rnd.Next(0, 3))
+                {
+                    case 0:
+                        d++;
+                        monsters.Add(new Skeleton(ThisEngine,d));
+                        break;
+                    case 1:
+                        e++;
+                        monsters.Add(new Slime(ThisEngine,e));
+                        break;
+                    case 2:
+                        f++;
+                        monsters.Add(new Orc(ThisEngine,f));
+                        break;
+                }
+            }
         }
         protected override void Update_KGB()
         {
-            //Console.WriteLine($"{i++}"); //순서 테스트
-            
+            //Console.WriteLine("Test");
+        }
+        public void Destroyer()
+        {
+            if(_isDestroy==true)
+            {
+                foreach(EntityBase e in dead)
+                {
+                    _monsters.Remove(e);
+                    _players.Remove(e);
+                }
+                _dead.Clear();
+                _isDestroy = false;
+            }
         }
     }
 }

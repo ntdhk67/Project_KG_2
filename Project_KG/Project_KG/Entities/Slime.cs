@@ -1,5 +1,4 @@
 ﻿using System;
-using System;
 using System.Collections.Generic;
 using System.Formats.Asn1;
 using System.Text;
@@ -8,9 +7,9 @@ using Project_KG.Interfaces;
 
 namespace Project_KG.Entities
 {
-    public class Knight:EntityBase,IPlayer
+    public class Slime:EntityBase,IPlayer
     {
-        public Knight(KGEngine engine,int n) : base(engine,n,hp:90,ap:10,name:"Knight")
+        public Slime(KGEngine engine,int n) : base(engine,n,hp:50,ap:10,name:"Slime")
         {
         } //에잇 몰라 나중에 복붙해올꺼야
     }

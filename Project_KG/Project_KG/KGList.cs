@@ -125,5 +125,16 @@ namespace Project_KG
                 yield return _list[i];
             }
         }
+        public void SwapIndex(int a, int b) //대충 저것을 위한 내가 추가하고 싶어서 추가한
+        {
+            if(b==-1)
+            {
+                return;
+            }
+            T t= _list[a];
+            _list[a] = _list[b];
+            _list[b] = t;
+            _num--;
+        }
     }
 }
