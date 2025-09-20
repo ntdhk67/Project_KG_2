@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Project_KG.Interfaces;
+using Project_KG.Scene;
 
 namespace Project_KG
 {
-    public abstract class KGBehaviour:IGameControll
+    public abstract class KGBehaviour
     {
         public bool Enabled, Started = false;
         private KGList<IComponent> components = new KGList<IComponent>();
@@ -16,7 +17,9 @@ namespace Project_KG
         public KGBehaviour(KGEngine kgEngine)
         {
             ThisEngine = kgEngine;
-            ThisGameManager = ThisEngine.GM[ThisEngine.SceneNum];
+            //ThisGameManager = ThisEngine.GM[ThisEngine.SceneNum];
+            ThisGameManager = ThisEngine.GM;
+            Awake();
         }
         public void Subscribe_Enable()
         {

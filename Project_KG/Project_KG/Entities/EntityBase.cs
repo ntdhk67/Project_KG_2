@@ -58,6 +58,7 @@ namespace Project_KG.Entities
                 else if (this is IMonster)
                 {
                     ThisGameManager.monsters.SwapIndex(thisIndex, ThisGameManager.monsters.Top-1);
+                    ThisGameManager._killCount++;
                 }
                 else
                 {
