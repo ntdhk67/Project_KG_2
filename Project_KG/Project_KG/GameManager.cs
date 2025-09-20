@@ -28,40 +28,40 @@ namespace Project_KG
         }
         protected override void Start_KGB()
         {
-            int a = 0, b = 0, c = 0, d = 0, e = 0, f = 0; //Knight, Archer, Mage, Skeleton, Slime, Orc 횟수대로 숫자 붙이고 싶었어서
-            for (int i= ThisEngine._rnd.Next(5, 10); i>0 ;i--)
+            //Knight, Archer, Mage, Skeleton, Slime, Orc 횟수대로 숫자 붙이고 싶었어서
+            int n = ThisEngine._rnd.Next(5, 10);
+            for (int i= n; i>0 ;i--)
             {
                 switch (ThisEngine._rnd.Next(0, 3))
                 {
                     case 0:
-                        a++;
-                        players.Add(new Knight(ThisEngine,a));
+                        players.Add(new Knight(ThisEngine,n-i+1));
                         break;
                     case 1:
-                        b++;
-                        players.Add(new Archer(ThisEngine,b));
+                        players.Add(new Archer(ThisEngine,n-i+1));
                         break;
                     case 2:
-                        c++;
-                        players.Add(new Mage(ThisEngine,c));
+                        players.Add(new Mage(ThisEngine,n - i + 1));
+                        break;
+                    default:
                         break;
                 }
             } //플레이어 선, 몬스터 후 근데 이렇게 하면 나중에 더 업그레이드 막 해가지고 전투 도중에 소환된게 있거나 그러면 순서관리하기 용이하지 않음... 그래서 아예 Invoke할 곳을 분할해서 두면 낫겠다 싶긴 한데...
-            for (int i = ThisEngine._rnd.Next(5, 10); i > 0; i--)
+            n = ThisEngine._rnd.Next(5, 10);
+            for (int i = n; i > 0; i--)
             {
                 switch (ThisEngine._rnd.Next(0, 3))
                 {
                     case 0:
-                        d++;
-                        monsters.Add(new Skeleton(ThisEngine,d));
+                        monsters.Add(new Skeleton(ThisEngine, n-i + 1));
                         break;
                     case 1:
-                        e++;
-                        monsters.Add(new Slime(ThisEngine,e));
+                        monsters.Add(new Slime(ThisEngine,n - i + 1));
                         break;
                     case 2:
-                        f++;
-                        monsters.Add(new Orc(ThisEngine,f));
+                        monsters.Add(new Orc(ThisEngine,n - i + 1));
+                        break;
+                    default:
                         break;
                 }
             }
@@ -82,6 +82,16 @@ namespace Project_KG
                 _dead.Clear();
                 _isDestroy = false;
             }
+        }
+        public bool EndCheck()
+        {
+            if(_players.isEmpty()==true&&_monsters.isEmpty()==true)
+            {
+                _players.Clear();
+                _monsters.Clear();
+                return true;
+            }
+            return false;
         }
     }
 }

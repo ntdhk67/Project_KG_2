@@ -8,6 +8,5 @@ namespace Project_KG.Interfaces
 {
     public interface IMonster
     {
-        public int Tag { get => 1; }
     }
 }

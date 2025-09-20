@@ -7,7 +7,7 @@ using Project_KG.Interfaces;
 
 namespace Project_KG.Entities
 {
-    public class Skeleton:EntityBase,IPlayer
+    public class Skeleton:EntityBase,IMonster
     {
         public Skeleton(KGEngine engine,int n) : base(engine,n,hp:30,ap:10,name:"Skeleton")
         {

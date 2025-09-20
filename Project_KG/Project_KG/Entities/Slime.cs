@@ -7,7 +7,7 @@ using Project_KG.Interfaces;
 
 namespace Project_KG.Entities
 {
-    public class Slime:EntityBase,IPlayer
+    public class Slime:EntityBase,IMonster
     {
         public Slime(KGEngine engine,int n) : base(engine,n,hp:50,ap:10,name:"Slime")
         {

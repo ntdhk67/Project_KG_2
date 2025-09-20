@@ -65,6 +65,10 @@ namespace Project_KG
                 {
                     return i;
                 }
+                /*if(object.ReferenceEquals(_list[i], t))
+                {
+                    return i;
+                }*/
             }
             return -1;
         }
@@ -134,7 +138,11 @@ namespace Project_KG
             T t= _list[a];
             _list[a] = _list[b];
             _list[b] = t;
-            _num--;
+            _num-=1;
+        }
+        public bool isEmpty() //그냥 여기서 처리하는게 좋을듯?
+        {
+            return _num == 0;
         }
     }
 }

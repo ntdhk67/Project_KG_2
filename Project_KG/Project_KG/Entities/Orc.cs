@@ -7,7 +7,7 @@ using Project_KG.Interfaces;
 
 namespace Project_KG.Entities
 {
-    public class Orc:EntityBase,IPlayer
+    public class Orc:EntityBase,IMonster
     {
         public Orc(KGEngine engine, int n) : base(engine,n,hp:70,ap:15,name:"Orc")
         {

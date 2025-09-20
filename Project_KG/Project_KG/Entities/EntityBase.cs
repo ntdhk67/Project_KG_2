@@ -10,12 +10,12 @@ namespace Project_KG.Entities
 {
     public abstract class EntityBase:KGBehaviour
     {
-        public int num { get;}
+        public int num { get; }
         protected int HP { get; set; }
         public int HP_Check => HP;
         protected int AP { get; }
         public string Name { get; }
-        public int Tag { get; }
+        //public int Tag { get; }
         public bool isDead = false;
         private Random _random => ThisEngine._rnd;
         protected EntityBase(KGEngine engine, int n, int hp, int ap, String name) : base(engine)
@@ -38,7 +38,10 @@ namespace Project_KG.Entities
         protected override void Update_KGB()
         {
             //Console.WriteLine((int)Tag); //잘 가져오는지 테스트
-            AttackDamage();
+            if(isDead==false)
+            {
+                AttackDamage();
+            }
         }
         //기타 처리 (Enable Disable OnDeath 등 처리 필요시 예약)
 
@@ -46,24 +49,23 @@ namespace Project_KG.Entities
         {
             HP -= dmg;
             //사망 bool만 해두기
-            if (HP <= 0)
+            if (HP <= 0&&isDead==false)
             {
-                isDead = true;
-                //ThisGameManager.thisIndex
-                switch (Tag)
+                if (this is IPlayer)
                 {
-                    case 0: //0=플레이어일 때
-                        ThisGameManager.players.SwapIndex(thisIndex, ThisGameManager.players.Top-1);
-                        break;
-                    case 1: //몬스터일 때
-                        ThisGameManager.monsters.SwapIndex(thisIndex, ThisGameManager.monsters.Top-1);
-                        break;
-                    default:
-                        break;
-
+                    ThisGameManager.players.SwapIndex(thisIndex, ThisGameManager.players.Top-1);
                 }
+                else if (this is IMonster)
+                {
+                    ThisGameManager.monsters.SwapIndex(thisIndex, ThisGameManager.monsters.Top-1);
+                }
+                else
+                {
+                }
+                //isDead = true;
                 ThisGameManager.dead.Add(this);
                 ThisGameManager._isDestroy = true;
+                Death();
             }
         }
         public void AttackDamage()
@@ -72,8 +74,11 @@ namespace Project_KG.Entities
             int index;
             if (TryGetTarget(out t,out index)==true)
             {
-                Console.WriteLine($"{num}번{Name}가 {t.num}번 {t.Name}을 공격! {t.HP}-{AP}={t.HP-AP}");
-                t.TakeDamage(AP,index);
+                if(t.isDead == false )
+                {
+                    Console.WriteLine($"{num}번{Name}가 {t.num}번 {t.Name}을 공격! {t.HP}-{AP}={t.HP - AP}");
+                    t.TakeDamage(AP, index);
+                }
                 //Console.WriteLine("YEE"); //대충 에러났나? 용도
             }
             //Console.WriteLine("YEE2");
@@ -81,31 +86,43 @@ namespace Project_KG.Entities
         }
         public bool TryGetTarget(out EntityBase? target,out int index)
         {
-            switch (Tag)
+            if(this is IPlayer)
             {
-                case 0: //0=플레이어일 때
-                    index = _random.Next(ThisGameManager.monsters.Top);
-                    target = ThisGameManager.monsters[index];
-                    if (ThisGameManager.monsters[index] == default(EntityBase))
-                    {
-                        return false;
-                    }
-                    return true;
-                case 1: //몬스터일 때
-                    index = _random.Next(ThisGameManager.players.Top);
-                    target = ThisGameManager.players[index];
-                    if (ThisGameManager.monsters[index] == default(EntityBase))
-                    {
-                        return false;
-                    }
-                    return true;
-                default:
-                    target = default(EntityBase);
-                    index = -1;
+                index = _random.Next(ThisGameManager.monsters.Top);
+                target = ThisGameManager.monsters[index];
+                if (ThisGameManager.monsters[index] == default(EntityBase))
+                {
+                    Console.WriteLine($"{num}{Name}{index}{target}문제다");
                     return false;
-
+                }
+                return true;
+            }
+            else if(this is IMonster)
+            {
+                index = _random.Next(ThisGameManager.players.Top);
+                target = ThisGameManager.players[index];
+                if (ThisGameManager.players[index] == default(EntityBase))
+                {
+                    Console.WriteLine($"{num}{Name}{index}{target}문제다");
+                    return false;
+                }
+                return true;
+            }
+            else
+            {
+                target = default(EntityBase);
+                index = -1;
+                return false;
             }
         }
-
+        protected void Death_KGB()
+        {
+            isDead = true;
+            UnSubscribe_Disable();
+        }
+        public void Death()
+        {
+            Death_KGB();
+        }
     }
 }

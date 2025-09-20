@@ -16,7 +16,7 @@ namespace Project_KG
         public KGBehaviour(KGEngine kgEngine)
         {
             ThisEngine = kgEngine;
-            ThisGameManager = ThisEngine.GM;
+            ThisGameManager = ThisEngine.GM[ThisEngine.SceneNum];
         }
         public void Subscribe_Enable()
         {
@@ -61,10 +61,7 @@ namespace Project_KG
         {
 
         }
-        protected void Death_KGB()
-        {
 
-        }
         protected void Enable_KGB()
         {
             if(Enabled==false)
@@ -113,9 +110,6 @@ namespace Project_KG
                 Disable_KGB();
             }
         }
-        public void Death()
-        {
-            Death_KGB();
-        }
+
     }
 }
