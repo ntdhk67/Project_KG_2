@@ -23,6 +23,7 @@ namespace Project_KG
         {
             _lobby = new Lobby(this);
             GM=new GameManager(this);
+            //GM.Add(new GameManager(this));
             _end = new End(this);
             InLobby();
         }
@@ -30,41 +31,18 @@ namespace Project_KG
         {
             while (true)
             {
-                /*switch(_stage) //대충 씬 같은거
-                {
-                    case 0: //로비
-                        _stage = 1;
-                        break;
-                    case 1: //던전 안
-
-                        break;
-                    case 2: //결산?
-                        break;
-                }*/
-
                 if (_ifStart == true)
                 {
                     Start(); //프레임 통일 및 Awake랑 달리 최초 활성화 시라는 점을 생각해서
                 }
                 Update();
                 //Thread.Sleep((int)100); //A키 테스트할때는 꺼도 되겠죠?
-                if (_notDungeon == false)
+                if (_notDungeon == false && GM._isDestroy == true)
                 {
-                    /*if (GM[SceneNum]._isDestroy == true)
+                    GM.Destroyer();
+                    if (GM.EndCheck() == true) //어차피 처리하고 나서만 체크해도 될 것 같아서 호출횟수 줄이기
                     {
-                        GM[SceneNum].Destroyer();
-                        if (GM[SceneNum].EndCheck() == true) //어차피 처리하고 나서만 체크해도 될 것 같아서 호출횟수 줄이기
-                        {
-                            Ending();
-                        }
-                    }*/
-                    if (GM._isDestroy == true)
-                    {
-                        GM.Destroyer();
-                        if (GM.EndCheck() == true) //어차피 처리하고 나서만 체크해도 될 것 같아서 호출횟수 줄이기
-                        {
-                            Ending();
-                        }
+                        Ending();
                     }
                 }
             }

@@ -73,13 +73,10 @@ namespace Project_KG.Entities
         {
             EntityBase t;
             int index;
-            if (TryGetTarget(out t,out index)==true)
+            if (TryGetTarget(out t,out index)==true &&t.isDead is false )
             {
-                if(t.isDead == false )
-                {
-                    Console.WriteLine($"{num}번{Name}가 {t.num}번 {t.Name}을 공격! {t.HP}-{AP}={t.HP - AP}");
-                    t.TakeDamage(AP, index);
-                }
+                Console.WriteLine($"{num}번{Name}가 {t.num}번 {t.Name}을 공격! {t.HP}-{AP}={t.HP - AP}");
+                t.TakeDamage(AP, index);
                 //Console.WriteLine("YEE"); //대충 에러났나? 용도
             }
             //Console.WriteLine("YEE2");
@@ -93,7 +90,7 @@ namespace Project_KG.Entities
                 target = ThisGameManager.monsters[index];
                 if (ThisGameManager.monsters[index] == default(EntityBase))
                 {
-                    Console.WriteLine($"{num}{Name}{index}{target}문제다");
+                    Console.WriteLine($"{num}{Name}{index}{target}문제다"); //if 파이프라인 비용 있지만 방어막으로서
                     return false;
                 }
                 return true;
@@ -102,7 +99,7 @@ namespace Project_KG.Entities
             {
                 index = _random.Next(ThisGameManager.players.Top);
                 target = ThisGameManager.players[index];
-                if (ThisGameManager.players[index] == default(EntityBase))
+                if (ThisGameManager.players[index] is default(EntityBase))
                 {
                     Console.WriteLine($"{num}{Name}{index}{target}문제다");
                     return false;
