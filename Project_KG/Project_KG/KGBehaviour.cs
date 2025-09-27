@@ -12,27 +12,33 @@ namespace Project_KG
     {
         public bool Enabled, Started = false;
         private KGList<IComponent> components = new KGList<IComponent>();
-        protected KGEngine ThisEngine { get;} 
-        protected GameManager ThisGameManager { get; set; }//일종의 scene 느낌으로 만드는 중
+        public KGEngine ThisEngine { get;} 
+        public GameManager ThisGameManager { get; set; }//일종의 scene 느낌으로 만드는 중
         public KGBehaviour(KGEngine kgEngine)
         {
             ThisEngine = kgEngine;
             //ThisGameManager = ThisEngine.GM[ThisEngine.SceneNum];
-            ThisGameManager = ThisEngine.GM;
+            ThisGameManager = kgEngine.GM;
             Awake();
         }
         public void Subscribe_Enable()
         {
+            ThisEngine.OnIfOnEnable();
+            ThisEngine.LifecycleOnEnable += OnEnable; //인터페이스로 따로 두고 구현했는지 체크해서 if로 빼는게 무조건 구독보단 싸겠다
             if(Started==false)
             {
-                ThisEngine.Lifecycle += Start; //중복 방지
+                ThisEngine.OnIfStart();
+                ThisEngine.LifecycleStart += Start; //중복 방지
             }
-            ThisEngine.Lifecycle += Update;
+            ThisEngine.LifecycleUpdate += Update;
         }
         public void UnSubscribe_Disable()
         {
-            ThisEngine.Lifecycle -= Start; //구독한적 없어도 if 없이 -=해도 됨 (List와 같은 이유)
-            ThisEngine.Lifecycle -= Update;
+            ThisEngine.LifecycleOnEnable -= OnEnable;
+            ThisEngine.LifecycleStart -= Start; //구독한적 없어도 if 없이 -=해도 됨 (List와 같은 이유)
+            ThisEngine.LifecycleStart -= Update;
+            //ThisEngine.OnIfOnDisable();
+            //ThisEngine.LifecycleOnDisable += OnDisable;
         }
         public T AddComponent<T>() where T : IComponent,new()
         {
@@ -85,18 +91,17 @@ namespace Project_KG
         public void Awake()
         {
             Awake_KGB();
-            ThisEngine.Lifecycle -= Awake;
         }
         public void Start()
         {
             if (Started == true)
             {
-                ThisEngine.Lifecycle -= Start;
+                ThisEngine.LifecycleStart -= Start;
                 return;
             }
             Start_KGB();
             Started = true;
-            ThisEngine.Lifecycle -= Start;
+            ThisEngine.LifecycleStart -= Start;
         }
         public void Update()
         {
@@ -113,6 +118,13 @@ namespace Project_KG
                 Disable_KGB();
             }
         }
+        public virtual void OnEnable()
+        {
+            ThisEngine.LifecycleOnEnable -= OnEnable;
+        }
+        public virtual void OnDisable()
+        {
 
+        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Project_KG.Scene;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,13 +11,17 @@ namespace Project_KG
 {
     public class KGEngine
     {
-        public event Action Lifecycle;
+        public event Action LifecycleStart;
+        public event Action LifecycleUpdate;
+        public event Action LifecycleOnEnable;
+        public event Action LifecycleOnDisable;
+        private Stopwatch _stopwatch=new Stopwatch();
         //public KGList<GameManager> GM=new KGList<GameManager>();
         public GameManager GM;
         private Lobby _lobby;
         private End _end;
         public int SceneNum = 0;
-        private bool _ifStart = false,_notDungeon;
+        private bool _ifStart = false, _ifOnEnable = false, _ifOnDisable = false, _notDungeon;
         public bool _ifA = false;
         public Random _rnd = new Random();
         //public KGList<Save> SaveData = new KGList<Save>(); 어우 저장 한번 해보렸는데 메모리 엄청 잡아먹는다 100만회를 메모리에 저장해버렸더니 1.2GB 뭐야이거
@@ -23,6 +29,7 @@ namespace Project_KG
         {
             _lobby = new Lobby(this);
             GM=new GameManager(this);
+            GM._memoryPool =new MemoryPool(this);
             //GM.Add(new GameManager(this));
             _end = new End(this);
             InLobby();
@@ -31,11 +38,23 @@ namespace Project_KG
         {
             while (true)
             {
+
+                /*if(_ifOnEnable==true)
+                {
+                    OnEnable();
+                    _ifOnEnable=false;
+                }*/
                 if (_ifStart == true)
                 {
                     Start(); //프레임 통일 및 Awake랑 달리 최초 활성화 시라는 점을 생각해서
+                    _ifStart = false;
                 }
                 Update();
+                /*if(_ifOnDisable==true)
+                {
+                    OnDisable();
+                    _ifOnDisable=false;
+                }*/
                 //Thread.Sleep((int)100); //A키 테스트할때는 꺼도 되겠죠?
                 if (_notDungeon == false && GM._isDestroy == true)
                 {
@@ -45,6 +64,7 @@ namespace Project_KG
                         Ending();
                     }
                 }
+
             }
         }
         public void InLobby()
@@ -77,21 +97,38 @@ namespace Project_KG
         }
         private void ResetLifecycle()
         {
-            Lifecycle = null;
+            LifecycleOnEnable = null;
+            LifecycleStart = null;
+            LifecycleUpdate = null;
+            LifecycleOnDisable = null;
         }
-
+        protected virtual void OnEnable()
+        {
+            LifecycleOnEnable?.Invoke();
+        }
         protected virtual void Start()
         {
-            Lifecycle?.Invoke();
+            LifecycleStart?.Invoke();
         }
         protected virtual void Update()
         {
-            Lifecycle?.Invoke();
+            LifecycleUpdate?.Invoke();
         }
-
-        public void OnIfStart_KGB() //start 활성화해줄 bool변수
+        protected virtual void OnDisable()
+        {
+            LifecycleOnDisable?.Invoke();
+        }
+        public void OnIfStart() //start 활성화해줄 bool변수
         {
             _ifStart = true;
+        }
+        public void OnIfOnEnable()
+        {
+            _ifOnEnable = true;
+        }
+        public void OnIfOnDisable()
+        {
+            _ifOnDisable = true;
         }
     }
 }

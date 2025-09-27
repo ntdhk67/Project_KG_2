@@ -10,21 +10,23 @@ namespace Project_KG.Entities
 {
     public abstract class EntityBase:KGBehaviour
     {
-        public int num { get; }
+        public int num { get; protected set; }
         protected int HP { get; set; }
         public int HP_Check => HP;
         protected int AP { get; }
+        protected readonly int MaxHp;
         public string Name { get; }
         //public int Tag { get; }
         public bool isDead = false;
         private Random _random => ThisEngine._rnd;
         protected EntityBase(KGEngine engine, int n, int hp, int ap, String name) : base(engine)
         {
+            MaxHp = hp;
             HP = hp;
             AP = ap;
             Name = name; //와아 나도 나중에 파싱 써봐야지
             num = n;
-            Subscribe_Enable();//나중에 옮길 예정
+            //나중에 옮길 예정(옮겨짐)
         }
         //라이프 사이클
         protected override void Awake_KGB()
@@ -34,6 +36,14 @@ namespace Project_KG.Entities
         protected override void Start_KGB()
         {
 
+        }
+        public void Reset(int n)
+        {
+            HP = MaxHp;
+            num = n;
+            Started = false;
+            isDead = false; //얘를 안 넣어놨구나 김대한 이 빡대가리
+            Subscribe_Enable();
         }
         protected override void Update_KGB()
         {
@@ -71,6 +81,7 @@ namespace Project_KG.Entities
         }
         public void AttackDamage()
         {
+            //Console.WriteLine(this.Name);
             EntityBase t;
             int index;
             if (TryGetTarget(out t,out index)==true &&t.isDead is false )
